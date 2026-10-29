@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jupyter Notebook — generated with runcell</title>
+    <meta name="description" content="Exported with runcell — convert .ipynb notebooks to HTML or PDF anytime at runcell.dev." />
+    <meta name="generator" content="runcell" />
+    <style>
+        :root {
+            --jp-code-font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+            --jp-content-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            --jp-cell-prompt-width: 64px;
+            --jp-input-prompt-color: #307fc1;
+            --jp-output-prompt-color: #bf5b3d;
+            --jp-cell-input-bg: #f7f7f7;
+            --jp-layout-color0: #ffffff;
+            --jp-layout-color1: #f7f7f7;
+            --jp-border-color1: #e0e0e0;
+            --jp-content-font-color0: #000000;
+            --jp-content-font-color1: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--jp-content-font-family);
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--jp-content-font-color0);
+            background-color: var(--jp-layout-color0);
+            margin: 0;
+            padding: 0;
+        }
+
+        .notebook-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Cell structure */
+        .cell {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .cell-prompt {
+            min-width: var(--jp-cell-prompt-width);
+            width: var(--jp-cell-prompt-width);
+            font-family: var(--jp-code-font-family);
+            font-size: 12px;
+            padding: 10px 8px 10px 0;
+            text-align: right;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .cell-content {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        /* Input prompt styling - Jupyter blue */
+        .input-prompt {
+            color: var(--jp-input-prompt-color);
+            font-weight: bold;
+        }
+
+        /* Output prompt styling - Jupyter red/orange */
+        .output-prompt {
+            color: var(--jp-output-prompt-color);
+            font-weight: bold;
+        }
+
+        /* Code cell input area */
+        .input-area {
+            background-color: var(--jp-cell-input-bg);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 2px;
+            padding: 8px 12px;
+            overflow-x: auto;
+        }
+
+        .input-area pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Output area */
+        .output-area {
+            margin-top: 0;
+        }
+
+        .output-wrapper {
+            display: flex;
+            flex-direction: row;
+            margin-top: 4px;
+        }
+
+        .output-content {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 0;
+        }
+
+        .output-content pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Stream output (stdout/stderr) */
+        .output-stream {
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .output-stderr {
+            background-color: #fdd;
+            padding: 8px 12px;
+            border-radius: 2px;
+        }
+
+        /* Execute result / display data */
+        .output-result {
+            padding: 4px 0;
+        }
+
+        .output-result pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+        }
+
+        /* Image output */
+        .output-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* HTML output (DataFrames, etc.) */
+        .output-html {
+            overflow-x: auto;
+        }
+
+        .output-html table {
+            border-collapse: collapse;
+            font-size: 13px;
+            font-family: var(--jp-content-font-family);
+        }
+
+        .output-html table th,
+        .output-html table td {
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            text-align: left;
+        }
+
+        .output-html table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .output-html table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* Error output */
+        .output-error {
+            background-color: #fff0f0;
+            padding: 8px 12px;
+            border-radius: 2px;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        /* Markdown cell styling */
+        .markdown-cell {
+            padding: 10px 0;
+        }
+
+        .markdown-cell h1 {
+            font-size: 2em;
+            font-weight: 600;
+            margin: 0.67em 0;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--jp-border-color1);
+        }
+
+        .markdown-cell h2 {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 0.83em 0;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--jp-border-color1);
+        }
+
+        .markdown-cell h3 {
+            font-size: 1.25em;
+            font-weight: 600;
+            margin: 1em 0;
+        }
+
+        .markdown-cell h4 {
+            font-size: 1em;
+            font-weight: 600;
+            margin: 1.33em 0;
+        }
+
+        .markdown-cell h5 {
+            font-size: 0.875em;
+            font-weight: 600;
+            margin: 1.67em 0;
+        }
+
+        .markdown-cell h6 {
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2.33em 0;
+            color: #6a737d;
+        }
+
+        .markdown-cell p {
+            margin: 0 0 16px 0;
+            line-height: 1.6;
+        }
+
+        .markdown-cell code {
+            font-family: var(--jp-code-font-family);
+            font-size: 85%;
+            background-color: rgba(27, 31, 35, 0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+
+        .markdown-cell pre {
+            background-color: var(--jp-cell-input-bg);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 3px;
+            padding: 16px;
+            overflow-x: auto;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+
+        .markdown-cell pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 100%;
+        }
+
+        .markdown-cell blockquote {
+            margin: 0 0 16px 0;
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 4px solid #dfe2e5;
+        }
+
+        .markdown-cell ul,
+        .markdown-cell ol {
+            margin: 0 0 16px 0;
+            padding-left: 2em;
+        }
+
+        .markdown-cell li {
+            margin: 0.25em 0;
+        }
+
+        .markdown-cell a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .markdown-cell a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-cell hr {
+            border: 0;
+            border-top: 1px solid var(--jp-border-color1);
+            margin: 24px 0;
+        }
+
+        .markdown-cell img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .markdown-cell table {
+            border-collapse: collapse;
+            margin: 0 0 16px 0;
+        }
+
+        .markdown-cell table th,
+        .markdown-cell table td {
+            border: 1px solid #dfe2e5;
+            padding: 6px 13px;
+        }
+
+        .markdown-cell table th {
+            font-weight: 600;
+            background-color: #f6f8fa;
+        }
+
+        .markdown-cell table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+
+        /* Raw cell styling */
+        .raw-cell {
+            background-color: var(--jp-layout-color1);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 2px;
+            padding: 8px 12px;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        /* Empty prompt placeholder */
+        .prompt-empty {
+            color: transparent;
+        }
+
+        .export-footer {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid var(--jp-border-color1);
+            color: #555;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .export-footer a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .export-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook-container">
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [1]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>
+# Q6: Examination Timetable Scheduling Using CSP
+
+# Backtracking timetable generator
+def solve_timetable(exams, slots, conflicts, timetable, index):
+    if index == len(exams):
+        return True
+
+    exam = exams[index]
+
+    for slot in slots:
+        safe = True
+
+        # Check conflicts with already scheduled exams
+        for other_exam in conflicts[exam]:
+            if timetable.get(other_exam) == slot:
+                safe = False
+                break
+
+        if safe:
+            timetable[exam] = slot
+
+            if solve_timetable(
+                exams, slots, conflicts, timetable, index + 1
+            ):
+                return True
+
+            del timetable[exam]
+
+    return False
+
+
+# Main program
+try:
+    n = int(input("Enter number of examinations (minimum 6): "))
+    if n &lt; 6:
+        print("Please enter at least 6 examinations.")
+        raise SystemExit
+
+    exams = []
+
+    for i in range(n):
+        exam = input(f"Enter examination {i + 1} name: ").strip()
+
+        if not exam or exam in exams:
+            print("Examination names must be non-empty and unique.")
+            raise SystemExit
+
+        exams.append(exam)
+
+    number_of_slots = int(input("Enter number of time slots (minimum 4): "))
+
+    if number_of_slots &lt; 4:
+        print("Please enter at least 4 time slots.")
+        raise SystemExit
+
+    slots = []
+
+    for i in range(number_of_slots):
+        slot = input(f"Enter time slot {i + 1}: ").strip()
+
+        if not slot or slot in slots:
+            print("Time slots must be non-empty and unique.")
+            raise SystemExit
+
+        slots.append(slot)
+
+    # Collect student enrollment records
+    students = int(input("Enter number of students: "))
+
+    if students &lt; 0:
+        print("Number of students cannot be negative.")
+        raise SystemExit
+
+    enrollment = {}
+
+    for i in range(students):
+        student = input(f"Enter student {i + 1} ID: ").strip()
+
+        if not student or student in enrollment:
+            print("Student IDs must be non-empty and unique.")
+            raise SystemExit
+
+        print("Available exams:", ", ".join(exams))
+        choices = input(
+            "Enter exams this student takes, separated by commas: "
+        ).split(",")
+
+        choices = [x.strip() for x in choices if x.strip()]
+
+        if any(x not in exams for x in choices):
+            print("Invalid examination name in enrollment.")
+            raise SystemExit
+
+        enrollment[student] = list(set(choices))
+
+    # Build examination conflict constraints
+    conflicts = {exam: set() for exam in exams}
+
+    for chosen_exams in enrollment.values():
+        for exam1 in chosen_exams:
+            for exam2 in chosen_exams:
+                if exam1 != exam2:
+                    conflicts[exam1].add(exam2)
+
+    # Order exams by number of conflicts (most constrained first)
+    exams.sort(key=lambda exam: len(conflicts[exam]), reverse=True)
+
+    timetable = {}
+
+    if solve_timetable(exams, slots, conflicts, timetable, 0):
+        print("\n===== EXAMINATION TIMETABLE =====")
+
+        for slot in slots:
+            print(f"\nTime slot: {slot}")
+
+            scheduled = [
+                exam for exam in exams if timetable[exam] == slot
+            ]
+
+            if scheduled:
+                for exam in scheduled:
+                    print("  ", exam)
+            else:
+                print("   No examinations")
+
+        # Verify that conflicting exams have different slots
+        valid = True
+
+        for exam in exams:
+            for other_exam in conflicts[exam]:
+                if timetable[exam] == timetable[other_exam]:
+                    valid = False
+
+        if valid:
+            print("\nValidation: No conflicting examinations overlap.")
+        else:
+            print("\nValidation failed: Timetable has conflicts.")
+
+        print("Valid timetable found: Yes")
+    else:
+        print("\nNo valid timetable exists with the available time slots.")
+        print("The available time slots are insufficient for this schedule.")
+
+except ValueError:
+    print("Invalid input! Enter valid numbers.")
+</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-stream">Enter number of examinations (minimum 6): 6
+Enter examination 1 name: Maths
+Enter examination 2 name: Physics
+Enter examination 3 name: Chemistry
+Enter examination 4 name: English
+Enter examination 5 name: Computer
+Enter examination 6 name: Biology
+Enter number of time slots (minimum 4): 4
+Enter time slot 1: 9 AM
+Enter time slot 2: 11 AM
+Enter time slot 3: 2 PM
+Enter time slot 4: 4 PM
+Enter number of students: 4
+Enter student 1 ID: S1
+Available exams: Maths, Physics, Chemistry, English, Computer, Biology
+Enter exams this student takes, separated by commas: Maths, Physics
+Enter student 2 ID: S2
+Available exams: Maths, Physics, Chemistry, English, Computer, Biology
+Enter exams this student takes, separated by commas: Chemistry, English
+Enter student 3 ID: S3
+Available exams: Maths, Physics, Chemistry, English, Computer, Biology
+Enter exams this student takes, separated by commas: Computer, Biology
+Enter student 4 ID: S4
+Available exams: Maths, Physics, Chemistry, English, Computer, Biology
+Enter exams this student takes, separated by commas: Maths, Chemistry
+
+===== EXAMINATION TIMETABLE =====
+
+Time slot: 9 AM
+   Maths
+   English
+   Computer
+
+Time slot: 11 AM
+   Chemistry
+   Physics
+   Biology
+
+Time slot: 2 PM
+   No examinations
+
+Time slot: 4 PM
+   No examinations
+
+Validation: No conflicting examinations overlap.
+Valid timetable found: Yes
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="export-footer">
+        Exported with <a href="https://www.runcell.dev/tool/ipynb-to-html">runcell</a> — convert notebooks to HTML or PDF anytime at runcell.dev.
+    </footer>
+</body>
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jupyter Notebook — generated with runcell</title>
+    <meta name="description" content="Exported with runcell — convert .ipynb notebooks to HTML or PDF anytime at runcell.dev." />
+    <meta name="generator" content="runcell" />
+    <style>
+        :root {
+            --jp-code-font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+            --jp-content-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            --jp-cell-prompt-width: 64px;
+            --jp-input-prompt-color: #307fc1;
+            --jp-output-prompt-color: #bf5b3d;
+            --jp-cell-input-bg: #f7f7f7;
+            --jp-layout-color0: #ffffff;
+            --jp-layout-color1: #f7f7f7;
+            --jp-border-color1: #e0e0e0;
+            --jp-content-font-color0: #000000;
+            --jp-content-font-color1: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--jp-content-font-family);
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--jp-content-font-color0);
+            background-color: var(--jp-layout-color0);
+            margin: 0;
+            padding: 0;
+        }
+
+        .notebook-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Cell structure */
+        .cell {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .cell-prompt {
+            min-width: var(--jp-cell-prompt-width);
+            width: var(--jp-cell-prompt-width);
+            font-family: var(--jp-code-font-family);
+            font-size: 12px;
+            padding: 10px 8px 10px 0;
+            text-align: right;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .cell-content {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        /* Input prompt styling - Jupyter blue */
+        .input-prompt {
+            color: var(--jp-input-prompt-color);
+            font-weight: bold;
+        }
+
+        /* Output prompt styling - Jupyter red/orange */
+        .output-prompt {
+            color: var(--jp-output-prompt-color);
+            font-weight: bold;
+        }
+
+        /* Code cell input area */
+        .input-area {
+            background-color: var(--jp-cell-input-bg);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 2px;
+            padding: 8px 12px;
+            overflow-x: auto;
+        }
+
+        .input-area pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Output area */
+        .output-area {
+            margin-top: 0;
+        }
+
+        .output-wrapper {
+            display: flex;
+            flex-direction: row;
+            margin-top: 4px;
+        }
+
+        .output-content {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 0;
+        }
+
+        .output-content pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Stream output (stdout/stderr) */
+        .output-stream {
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .output-stderr {
+            background-color: #fdd;
+            padding: 8px 12px;
+            border-radius: 2px;
+        }
+
+        /* Execute result / display data */
+        .output-result {
+            padding: 4px 0;
+        }
+
+        .output-result pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+        }
+
+        /* Image output */
+        .output-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* HTML output (DataFrames, etc.) */
+        .output-html {
+            overflow-x: auto;
+        }
+
+        .output-html table {
+            border-collapse: collapse;
+            font-size: 13px;
+            font-family: var(--jp-content-font-family);
+        }
+
+        .output-html table th,
+        .output-html table td {
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            text-align: left;
+        }
+
+        .output-html table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .output-html table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* Error output */
+        .output-error {
+            background-color: #fff0f0;
+            padding: 8px 12px;
+            border-radius: 2px;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        /* Markdown cell styling */
+        .markdown-cell {
+            padding: 10px 0;
+        }
+
+        .markdown-cell h1 {
+            font-size: 2em;
+            font-weight: 600;
+            margin: 0.67em 0;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--jp-border-color1);
+        }
+
+        .markdown-cell h2 {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 0.83em 0;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--jp-border-color1);
+        }
+
+        .markdown-cell h3 {
+            font-size: 1.25em;
+            font-weight: 600;
+            margin: 1em 0;
+        }
+
+        .markdown-cell h4 {
+            font-size: 1em;
+            font-weight: 600;
+            margin: 1.33em 0;
+        }
+
+        .markdown-cell h5 {
+            font-size: 0.875em;
+            font-weight: 600;
+            margin: 1.67em 0;
+        }
+
+        .markdown-cell h6 {
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2.33em 0;
+            color: #6a737d;
+        }
+
+        .markdown-cell p {
+            margin: 0 0 16px 0;
+            line-height: 1.6;
+        }
+
+        .markdown-cell code {
+            font-family: var(--jp-code-font-family);
+            font-size: 85%;
+            background-color: rgba(27, 31, 35, 0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+
+        .markdown-cell pre {
+            background-color: var(--jp-cell-input-bg);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 3px;
+            padding: 16px;
+            overflow-x: auto;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+
+        .markdown-cell pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 100%;
+        }
+
+        .markdown-cell blockquote {
+            margin: 0 0 16px 0;
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 4px solid #dfe2e5;
+        }
+
+        .markdown-cell ul,
+        .markdown-cell ol {
+            margin: 0 0 16px 0;
+            padding-left: 2em;
+        }
+
+        .markdown-cell li {
+            margin: 0.25em 0;
+        }
+
+        .markdown-cell a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .markdown-cell a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-cell hr {
+            border: 0;
+            border-top: 1px solid var(--jp-border-color1);
+            margin: 24px 0;
+        }
+
+        .markdown-cell img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .markdown-cell table {
+            border-collapse: collapse;
+            margin: 0 0 16px 0;
+        }
+
+        .markdown-cell table th,
+        .markdown-cell table td {
+            border: 1px solid #dfe2e5;
+            padding: 6px 13px;
+        }
+
+        .markdown-cell table th {
+            font-weight: 600;
+            background-color: #f6f8fa;
+        }
+
+        .markdown-cell table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+
+        /* Raw cell styling */
+        .raw-cell {
+            background-color: var(--jp-layout-color1);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 2px;
+            padding: 8px 12px;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        /* Empty prompt placeholder */
+        .prompt-empty {
+            color: transparent;
+        }
+
+        .export-footer {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid var(--jp-border-color1);
+            color: #555;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .export-footer a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .export-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook-container">
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [1]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>
+import heapq
+import math
+
+cities = {
+    "Pune": (0, 0),
+    "Mumbai": (2, 0),
+    "Nashik": (2, 2),
+    "Surat": (4, 0),
+    "Indore": (4, 3),
+    "Vadodara": (6, 1),
+    "Ahmedabad": (7, 2),
+    "Nagpur": (7, 5)
+}
+
+graph = {
+    "Pune": [("Mumbai", 2), ("Nashik", 3)],
+    "Mumbai": [("Pune", 2), ("Surat", 3),
+               ("Nashik", 2)],
+    "Nashik": [("Pune", 3), ("Mumbai", 2),
+               ("Indore", 4)],
+    "Surat": [("Mumbai", 3), ("Vadodara", 2)],
+    "Indore": [("Nashik", 4), ("Vadodara", 3),
+               ("Nagpur", 4)],
+    "Vadodara": [("Surat", 2), ("Indore", 3),
+                 ("Ahmedabad", 2)],
+    "Ahmedabad": [("Vadodara", 2), ("Nagpur", 4)],
+    "Nagpur": [("Indore", 4), ("Ahmedabad", 4)]
+}
+</pre></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [2]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>def heurastic(city , goal ):
+  x1,y1 = cities[city]
+  x2,y2 = cities[goal]
+  return math.sqrt((x2-x1)**2 +(y2-y1)**2)</pre></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [3]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>from os import nice
+def greedy_best_first(start,goal) :
+  pq = [(heurastic(start , goal) , start)]
+  parent = {start: None}
+  visited= set()
+  total_cost = {start : 0}
+  while pq:
+    h, current = heapq.heappop(pq)
+    if current in visited :
+      continue
+    visited.add(current)
+    if current == goal :
+      path = []
+      node = goal
+
+      while node is not None :
+        path.append(node)
+        node = parent[node]
+
+      path.reverse()
+      return path,total_cost[goal],len(visited)
+
+    for neighbour , distance in graph[current] :
+      if neighbour not in visited or neighbour not in parent :
+        parent[neighbour] = current
+        total_cost[neighbour] = (total_cost[current] + distance)
+        heapq.heappush(pq , (heurastic(neighbour,goal) , neighbour))
+  return None,0,len(visited)
+</pre></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [4]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>
+start = input("Enter source city: ").strip().title()
+goal = input("Enter destination city: ").strip().title()
+
+if start not in cities or goal not in cities:
+    print("Invalid city name!")
+else:
+    path, cost, explored = greedy_best_first(start, goal)
+
+    if path:
+        print("Selected route:", " -&gt; ".join(path))
+        print("Total path cost:", cost)
+        print("Nodes explored:", explored)
+    else:
+        print("No route found.")
+</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-stream">Enter source city: pune 
+Enter destination city: nashik
+Selected route: Pune -&gt; Nashik
+Total path cost: 3
+Nodes explored: 2
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [5]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>
+# Q2: Greedy Best-First Search Algorithm
+
+import heapq
+import math
+
+# 1. Define city coordinates for heuristic calculation
+cities = {
+    "Pune": (0, 0),
+    "Mumbai": (2, 0),
+    "Nashik": (2, 2),
+    "Surat": (4, 0),
+    "Indore": (4, 3),
+    "Vadodara": (6, 1),
+    "Ahmedabad": (7, 2),
+    "Nagpur": (7, 5)
+}
+
+# 2. Define weighted graph
+graph = {
+    "Pune": [("Mumbai", 2), ("Nashik", 3)],
+    "Mumbai": [("Pune", 2), ("Surat", 3), ("Nashik", 2)],
+    "Nashik": [("Pune", 3), ("Mumbai", 2), ("Indore", 4)],
+    "Surat": [("Mumbai", 3), ("Vadodara", 2)],
+    "Indore": [("Nashik", 4), ("Vadodara", 3), ("Nagpur", 4)],
+    "Vadodara": [("Surat", 2), ("Indore", 3), ("Ahmedabad", 2)],
+    "Ahmedabad": [("Vadodara", 2), ("Nagpur", 4)],
+    "Nagpur": [("Indore", 4), ("Ahmedabad", 4)]
+}
+
+# 3. Heuristic function: estimated distance to destination
+def heuristic(city, goal):
+    x1, y1 = cities[city]
+    x2, y2 = cities[goal]
+    return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+# 4. Greedy Best-First Search
+def greedy_best_first(start, goal):
+    pq = [(heuristic(start, goal), start)]
+    parent = {start: None}
+    total_cost = {start: 0}
+    visited = set()
+
+    while pq:
+        h, current = heapq.heappop(pq)
+
+        if current in visited:
+            continue
+
+        visited.add(current)
+
+        # Destination reached
+        if current == goal:
+            path = []
+            node = goal
+
+            while node is not None:
+                path.append(node)
+                node = parent[node]
+
+            path.reverse()
+            return path, total_cost[goal], len(visited)
+
+        # Explore neighboring cities
+        for neighbor, distance in graph[current]:
+            if neighbor not in visited and neighbor not in parent:
+                parent[neighbor] = current
+                total_cost[neighbor] = total_cost[current] + distance
+                heapq.heappush(
+                    pq, (heuristic(neighbor, goal), neighbor)
+                )
+
+    return None, 0, len(visited)
+
+# 5. Take input from user
+print("Available cities:", ", ".join(cities.keys()))
+
+start = input("Enter source city: ").strip().title()
+goal = input("Enter destination city: ").strip().title()
+
+# 6. Display result
+if start not in cities or goal not in cities:
+    print("Invalid city name!")
+
+else:
+    path, cost, explored = greedy_best_first(start, goal)
+
+    if path:
+        print("Selected route:", " -&gt; ".join(path))
+        print("Total path cost:", cost)
+        print("Nodes explored:", explored)
+    else:
+        print("No route found.")
+</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-stream">Available cities: Pune, Mumbai, Nashik, Surat, Indore, Vadodara, Ahmedabad, Nagpur
+Enter source city: Pune
+Enter destination city: Mumbai
+Selected route: Pune -&gt; Mumbai
+Total path cost: 2
+Nodes explored: 2
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [5]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre></pre></div>
+            </div>
+        </div>
+    </div>
+    <footer class="export-footer">
+        Exported with <a href="https://www.runcell.dev/tool/ipynb-to-html">runcell</a> — convert notebooks to HTML or PDF anytime at runcell.dev.
+    </footer>
+</body>
+</html>

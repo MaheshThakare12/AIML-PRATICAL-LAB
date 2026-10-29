@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AIML Experiment Book</title>
+  <style>
+    /* ── Jupyter/runcell design tokens (copied from 1st.html) ── */
+    :root {
+      --jp-code-font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+      --jp-content-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      --jp-cell-prompt-width: 72px;
+      --jp-input-prompt-color: #307fc1;
+      --jp-output-prompt-color: #bf5b3d;
+      --jp-cell-input-bg: #f7f7f7;
+      --jp-layout-color0: #ffffff;
+      --jp-layout-color1: #f7f7f7;
+      --jp-border-color1: #e0e0e0;
+      --jp-content-font-color0: #000000;
+      --jp-content-font-color1: #333333;
+      --accent: #307fc1;
+      --accent-dark: #1a5fa0;
+      --success: #2e7d32;
+      --pending-bg: #fffde7;
+      --pending-border: #f9a825;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--jp-content-font-family);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--jp-content-font-color0);
+      background-color: var(--jp-layout-color0);
+    }
+
+    /* ── Notebook container (same as experiments) ── */
+    .notebook-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 20px 48px;
+    }
+
+    /* ── Top bar (mimics runcell export header) ── */
+    .nb-topbar {
+      background: var(--jp-layout-color1);
+      border-bottom: 1px solid var(--jp-border-color1);
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nb-topbar-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .nb-title {
+      font-family: var(--jp-code-font-family);
+      font-size: 13px;
+      color: var(--jp-content-font-color1);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nb-title .nb-icon {
+      color: var(--accent);
+      font-size: 16px;
+    }
+    .nb-search {
+      flex: 1;
+      max-width: 340px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .nb-search input {
+      width: 100%;
+      padding: 5px 10px 5px 28px;
+      border: 1px solid var(--jp-border-color1);
+      border-radius: 3px;
+      background: var(--jp-layout-color0);
+      font-family: var(--jp-content-font-family);
+      font-size: 13px;
+      color: var(--jp-content-font-color0);
+      outline: none;
+      transition: border-color .2s;
+    }
+    .nb-search input:focus { border-color: var(--accent); }
+    .nb-search-wrap { position: relative; width: 100%; }
+    .nb-search-icon {
+      position: absolute; left: 8px; top: 50%;
+      transform: translateY(-50%);
+      color: #888; font-size: 12px; pointer-events: none;
+    }
+    .nb-filter-btns {
+      display: flex;
+      gap: 4px;
+    }
+    .fb {
+      padding: 4px 10px;
+      border: 1px solid var(--jp-border-color1);
+      border-radius: 3px;
+      background: var(--jp-layout-color0);
+      font-family: var(--jp-content-font-family);
+      font-size: 12px;
+      color: var(--jp-content-font-color1);
+      cursor: pointer;
+      transition: all .18s;
+    }
+    .fb:hover { border-color: var(--accent); color: var(--accent); }
+    .fb.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    /* ── Progress bar (thin, like Jupyter kernel activity) ── */
+    .nb-progress {
+      height: 3px;
+      background: var(--jp-border-color1);
+      overflow: hidden;
+    }
+    .nb-progress-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width .6s ease;
+    }
+
+    /* ── Page title cell (mimics markdown cell h1) ── */
+    .page-title-cell {
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--jp-border-color1);
+    }
+    .page-title-cell h1 {
+      font-size: 2em;
+      font-weight: 600;
+      color: var(--jp-content-font-color0);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .page-title-cell p {
+      margin-top: 8px;
+      font-size: 14px;
+      color: var(--jp-content-font-color1);
+      line-height: 1.6;
+    }
+
+    /* ── Stats row (mimics output cell) ── */
+    .stats-output {
+      display: flex;
+      margin-bottom: 20px;
+    }
+    .stats-prompt {
+      min-width: var(--jp-cell-prompt-width);
+      font-family: var(--jp-code-font-family);
+      font-size: 12px;
+      color: var(--jp-output-prompt-color);
+      padding: 8px 8px 8px 0;
+      text-align: right;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    .stats-body {
+      flex: 1;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 8px 0;
+    }
+    .stat-box {
+      background: var(--jp-cell-input-bg);
+      border: 1px solid var(--jp-border-color1);
+      border-radius: 3px;
+      padding: 10px 18px;
+      text-align: center;
+      min-width: 110px;
+    }
+    .stat-box .sn {
+      font-family: var(--jp-code-font-family);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .stat-box .sl {
+      font-size: 11px;
+      color: var(--jp-content-font-color1);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .stat-box.completed-stat .sn { color: var(--success); }
+
+    /* ── Section header (mimics markdown h2) ── */
+    .section-md {
+      display: flex;
+      margin-bottom: 8px;
+    }
+    .section-md-prompt {
+      min-width: var(--jp-cell-prompt-width);
+      flex-shrink: 0;
+    }
+    .section-md-body h2 {
+      font-size: 1.5em;
+      font-weight: 600;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--jp-border-color1);
+      color: var(--jp-content-font-color0);
+      margin-bottom: 4px;
+    }
+    .section-md-body p {
+      font-size: 13px;
+      color: var(--jp-content-font-color1);
+      margin-bottom: 12px;
+    }
+
+    /* ── Experiment list (each row = a code cell) ── */
+    .exp-cell {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 6px;
+      position: relative;
+    }
+    .exp-cell-prompt {
+      min-width: var(--jp-cell-prompt-width);
+      font-family: var(--jp-code-font-family);
+      font-size: 12px;
+      padding: 10px 8px 10px 0;
+      text-align: right;
+      flex-shrink: 0;
+      user-select: none;
+      color: var(--jp-input-prompt-color);
+      font-weight: bold;
+      line-height: 1.5;
+    }
+    .exp-cell-content {
+      flex: 1;
+      min-width: 0;
+    }
+    /* the "input area" = the experiment row */
+    .exp-input-area {
+      background-color: var(--jp-cell-input-bg);
+      border: 1px solid var(--jp-border-color1);
+      border-radius: 2px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: background .18s, border-color .18s;
+      cursor: default;
+    }
+    .exp-input-area:hover {
+      background: #f0f4f8;
+      border-color: #b0c4de;
+    }
+    .exp-input-area.missing {
+      background: var(--pending-bg);
+      border-color: #f0d070;
+      opacity: .75;
+    }
+    .exp-input-area.completed-row {
+      background: #f0faf0;
+      border-color: #81c784;
+    }
+
+    /* number badge */
+    .exp-num {
+      font-family: var(--jp-code-font-family);
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--jp-input-prompt-color);
+      min-width: 24px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .exp-num.miss { color: #aaa; }
+
+    /* divider */
+    .exp-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--jp-border-color1);
+      flex-shrink: 0;
+    }
+
+    /* title — clickable link */
+    .exp-title {
+      flex: 1;
+      font-family: var(--jp-content-font-family);
+      font-size: 13.5px;
+      font-weight: 500;
+      color: var(--jp-input-prompt-color);
+      line-height: 1.4;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color .15s, text-decoration .15s;
+    }
+    .exp-title:hover { color: var(--accent-dark); text-decoration: underline; }
+    .exp-title.miss {
+      color: #aaa;
+      font-style: italic;
+      cursor: default;
+      pointer-events: none;
+      text-decoration: none;
+    }
+
+    /* topic tag */
+    .exp-tag {
+      font-family: var(--jp-code-font-family);
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 2px;
+      background: #e3effa;
+      color: var(--accent);
+      white-space: nowrap;
+      flex-shrink: 0;
+      border: 1px solid #b8d4ed;
+    }
+    .exp-tag.miss {
+      background: #f5f5f5;
+      color: #bbb;
+      border-color: #e0e0e0;
+    }
+
+    /* open button — styled like a link (Jupyter style) */
+    .open-btn {
+      font-family: var(--jp-content-font-family);
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 2px;
+      border: 1px solid var(--accent);
+      background: var(--accent);
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background .18s, border-color .18s;
+    }
+    .open-btn:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+    .miss-label {
+      font-family: var(--jp-code-font-family);
+      font-size: 11px;
+      color: #bbb;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* check button */
+    .chk-btn {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 1.5px solid var(--jp-border-color1);
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px;
+      color: transparent;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all .18s;
+    }
+    .chk-btn:hover { border-color: var(--success); color: var(--success); }
+    .completed-row .chk-btn {
+      background: var(--success);
+      border-color: var(--success);
+      color: #fff;
+    }
+
+    /* ── Empty state ── */
+    .empty-cell {
+      display: none;
+      flex-direction: row;
+      margin-bottom: 6px;
+    }
+    .empty-body {
+      flex: 1;
+      padding: 24px;
+      text-align: center;
+      background: var(--jp-cell-input-bg);
+      border: 1px solid var(--jp-border-color1);
+      border-radius: 2px;
+      color: var(--jp-content-font-color1);
+      font-size: 13px;
+    }
+
+    /* ── Export footer (same as 1st.html) ── */
+    .export-footer {
+      margin-top: 32px;
+      padding-top: 16px;
+      border-top: 1px solid var(--jp-border-color1);
+      color: #555;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 1.2rem; right: 1.2rem;
+      background: #333;
+      color: #fff;
+      border-radius: 3px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-family: var(--jp-content-font-family);
+      z-index: 9999;
+      opacity: 0;
+      transform: translateY(10px);
+      pointer-events: none;
+      transition: opacity .25s, transform .25s;
+      box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+
+    /* ── Responsive ── */
+    @media (max-width: 620px) {
+      :root { --jp-cell-prompt-width: 0px; }
+      .exp-cell-prompt, .stats-prompt, .section-md-prompt { display: none; }
+      .exp-tag { display: none; }
+      .nb-filter-btns { display: none; }
+    }
+    @media (max-width: 480px) {
+      .stats-body { gap: 8px; }
+      .stat-box { min-width: 80px; padding: 8px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ TOP BAR (runcell-style header) ══ -->
+<div class="nb-topbar">
+  <div class="nb-topbar-inner">
+    <div class="nb-title">
+      <span class="nb-icon">📓</span>
+      AIML Experiment Book
+    </div>
+
+    <!-- search -->
+    <div class="nb-search">
+      <div class="nb-search-wrap">
+        <span class="nb-search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search experiment…" />
+      </div>
+    </div>
+
+    <!-- filter buttons -->
+    <div class="nb-filter-btns" id="filterBtns">
+      <button class="fb active" data-filter="all">All</button>
+      <button class="fb" data-filter="available">Available</button>
+      <button class="fb" data-filter="missing">Pending</button>
+      <button class="fb" data-filter="completed">Completed</button>
+    </div>
+  </div>
+
+  <!-- thin progress bar under topbar -->
+  <div class="nb-progress">
+    <div class="nb-progress-fill" id="progFill" style="width:0%"></div>
+  </div>
+</div>
+
+<!-- ══ NOTEBOOK CONTAINER ══ -->
+<div class="notebook-container">
+
+  <!-- Section header (markdown cell style) -->
+  <div class="section-md">
+    <div class="section-md-prompt"></div>
+    <div class="section-md-body">
+      <h2 id="secTitle">All Experiments</h2>
+      <p id="secDesc">Showing all 33 experiments in order. Green border = completed, yellow = file pending.</p>
+    </div>
+  </div>
+
+  <!-- Experiment list (code cells) -->
+  <div id="expList"></div>
+
+  <!-- Empty state -->
+  <div class="empty-cell" id="emptyState">
+    <div style="min-width:var(--jp-cell-prompt-width);flex-shrink:0"></div>
+    <div class="empty-body">No experiments match your search.</div>
+  </div>
+
+  <!-- Footer (same as 1st.html export footer) -->
+  <div class="export-footer">
+    AIML Experiment Book &mdash; 33 College Practicals &mdash; Built with ♥
+  </div>
+
+</div><!-- /notebook-container -->
+
+<div class="toast" id="toast"></div>
+
+<script src="experiments.js?v=2"></script>
+<script>
+  /* ── State ── */
+  let completed = new Set(JSON.parse(localStorage.getItem('aiml_completed') || '[]'));
+  let filter = 'all', query = '';
+
+  /* ── Toast ── */
+  function toast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  /* ── Save ── */
+  function save() {
+    localStorage.setItem('aiml_completed', JSON.stringify([...completed]));
+  }
+
+  /* ── Stats ── */
+  function updateStats() {
+    const done = completed.size;
+    document.getElementById('progFill').style.width = Math.round(done / EXPERIMENTS.length * 100) + '%';
+  }
+
+  /* ── Render ── */
+  function render() {
+    const list  = document.getElementById('expList');
+    const empty = document.getElementById('emptyState');
+    list.innerHTML = '';
+
+    const q = query.toLowerCase();
+    const filtered = EXPERIMENTS.filter(e => {
+      const matchQ = !q ||
+        String(e.id).includes(q) ||
+        e.title.toLowerCase().includes(q) ||
+        e.topic.toLowerCase().includes(q);
+      const isDone = completed.has(e.id);
+      const matchF =
+        filter === 'all'       ? true :
+        filter === 'available' ? e.available :
+        filter === 'missing'   ? !e.available :
+        filter === 'completed' ? isDone : true;
+      return matchQ && matchF;
+    });
+
+    if (!filtered.length) {
+      empty.style.display = 'flex';
+      list.style.display  = 'none';
+      return;
+    }
+    empty.style.display = 'none';
+    list.style.display  = '';
+
+    filtered.forEach(exp => {
+      const isDone = completed.has(exp.id);
+      const num    = String(exp.id).padStart(2, '0');
+
+      const cell = document.createElement('div');
+      cell.className = 'exp-cell';
+
+      cell.innerHTML = `
+        <div class="exp-cell-prompt">In [${exp.id}]:</div>
+        <div class="exp-cell-content">
+          <div class="exp-input-area ${exp.available ? '' : 'missing'} ${isDone ? 'completed-row' : ''}">
+            <span class="exp-num ${exp.available ? '' : 'miss'}">${num}</span>
+            <div class="exp-divider"></div>
+            ${exp.available
+              ? `<a class="exp-title" href="${exp.file}" target="_blank" rel="noopener">${exp.title}</a>`
+              : `<span class="exp-title miss">${exp.title}</span>`}
+            <span class="exp-tag ${exp.available ? '' : 'miss'}">${exp.topic}</span>
+            ${!exp.available ? `<span class="miss-label">⏳ Pending</span>` : ''}
+            ${exp.available
+              ? `<button class="chk-btn" data-id="${exp.id}" title="${isDone ? 'Mark incomplete' : 'Mark complete'}">${isDone ? '✓' : ''}</button>`
+              : ''}
+          </div>
+        </div>
+      `;
+
+      list.appendChild(cell);
+    });
+
+    /* wire checkboxes */
+    list.querySelectorAll('.chk-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.preventDefault();
+        const id = Number(btn.dataset.id);
+        if (completed.has(id)) { completed.delete(id); toast(`Experiment ${id} unmarked`); }
+        else { completed.add(id); toast(`✓ Experiment ${id} marked complete`); }
+        save(); updateStats(); render();
+      });
+    });
+
+    /* update section desc */
+    const labels = {
+      all: 'All Experiments',
+      available: 'Available Experiments',
+      missing: 'Pending Experiments',
+      completed: 'Completed Experiments'
+    };
+    document.getElementById('secTitle').textContent = labels[filter];
+    document.getElementById('secDesc').textContent  =
+      `Showing ${filtered.length} of ${EXPERIMENTS.length} experiments.` +
+      (filter === 'missing' ? ' Add HTML files to experiments/ folder to activate them.' : '');
+  }
+
+  /* ── Search ── */
+  document.getElementById('searchInput').addEventListener('input', e => {
+    query = e.target.value; render();
+  });
+
+  /* ── Filters ── */
+  document.getElementById('filterBtns').addEventListener('click', e => {
+    const btn = e.target.closest('.fb'); if (!btn) return;
+    document.querySelectorAll('.fb').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filter = btn.dataset.filter;
+    render();
+  });
+
+  /* ── Init ── */
+  updateStats();
+  render();
+</script>
+</body>
+</html>

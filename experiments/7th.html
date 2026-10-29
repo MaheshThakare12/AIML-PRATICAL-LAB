@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jupyter Notebook — generated with runcell</title>
+    <meta name="description" content="Exported with runcell — convert .ipynb notebooks to HTML or PDF anytime at runcell.dev." />
+    <meta name="generator" content="runcell" />
+    <style>
+        :root {
+            --jp-code-font-family: 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+            --jp-content-font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            --jp-cell-prompt-width: 64px;
+            --jp-input-prompt-color: #307fc1;
+            --jp-output-prompt-color: #bf5b3d;
+            --jp-cell-input-bg: #f7f7f7;
+            --jp-layout-color0: #ffffff;
+            --jp-layout-color1: #f7f7f7;
+            --jp-border-color1: #e0e0e0;
+            --jp-content-font-color0: #000000;
+            --jp-content-font-color1: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--jp-content-font-family);
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--jp-content-font-color0);
+            background-color: var(--jp-layout-color0);
+            margin: 0;
+            padding: 0;
+        }
+
+        .notebook-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Cell structure */
+        .cell {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .cell-prompt {
+            min-width: var(--jp-cell-prompt-width);
+            width: var(--jp-cell-prompt-width);
+            font-family: var(--jp-code-font-family);
+            font-size: 12px;
+            padding: 10px 8px 10px 0;
+            text-align: right;
+            flex-shrink: 0;
+            user-select: none;
+        }
+
+        .cell-content {
+            flex: 1;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        /* Input prompt styling - Jupyter blue */
+        .input-prompt {
+            color: var(--jp-input-prompt-color);
+            font-weight: bold;
+        }
+
+        /* Output prompt styling - Jupyter red/orange */
+        .output-prompt {
+            color: var(--jp-output-prompt-color);
+            font-weight: bold;
+        }
+
+        /* Code cell input area */
+        .input-area {
+            background-color: var(--jp-cell-input-bg);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 2px;
+            padding: 8px 12px;
+            overflow-x: auto;
+        }
+
+        .input-area pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Output area */
+        .output-area {
+            margin-top: 0;
+        }
+
+        .output-wrapper {
+            display: flex;
+            flex-direction: row;
+            margin-top: 4px;
+        }
+
+        .output-content {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 0;
+        }
+
+        .output-content pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        /* Stream output (stdout/stderr) */
+        .output-stream {
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .output-stderr {
+            background-color: #fdd;
+            padding: 8px 12px;
+            border-radius: 2px;
+        }
+
+        /* Execute result / display data */
+        .output-result {
+            padding: 4px 0;
+        }
+
+        .output-result pre {
+            margin: 0;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+        }
+
+        /* Image output */
+        .output-image {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* HTML output (DataFrames, etc.) */
+        .output-html {
+            overflow-x: auto;
+        }
+
+        .output-html table {
+            border-collapse: collapse;
+            font-size: 13px;
+            font-family: var(--jp-content-font-family);
+        }
+
+        .output-html table th,
+        .output-html table td {
+            border: 1px solid #ddd;
+            padding: 6px 10px;
+            text-align: left;
+        }
+
+        .output-html table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+
+        .output-html table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+
+        /* Error output */
+        .output-error {
+            background-color: #fff0f0;
+            padding: 8px 12px;
+            border-radius: 2px;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        /* Markdown cell styling */
+        .markdown-cell {
+            padding: 10px 0;
+        }
+
+        .markdown-cell h1 {
+            font-size: 2em;
+            font-weight: 600;
+            margin: 0.67em 0;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--jp-border-color1);
+        }
+
+        .markdown-cell h2 {
+            font-size: 1.5em;
+            font-weight: 600;
+            margin: 0.83em 0;
+            padding-bottom: 0.3em;
+            border-bottom: 1px solid var(--jp-border-color1);
+        }
+
+        .markdown-cell h3 {
+            font-size: 1.25em;
+            font-weight: 600;
+            margin: 1em 0;
+        }
+
+        .markdown-cell h4 {
+            font-size: 1em;
+            font-weight: 600;
+            margin: 1.33em 0;
+        }
+
+        .markdown-cell h5 {
+            font-size: 0.875em;
+            font-weight: 600;
+            margin: 1.67em 0;
+        }
+
+        .markdown-cell h6 {
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 2.33em 0;
+            color: #6a737d;
+        }
+
+        .markdown-cell p {
+            margin: 0 0 16px 0;
+            line-height: 1.6;
+        }
+
+        .markdown-cell code {
+            font-family: var(--jp-code-font-family);
+            font-size: 85%;
+            background-color: rgba(27, 31, 35, 0.05);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+        }
+
+        .markdown-cell pre {
+            background-color: var(--jp-cell-input-bg);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 3px;
+            padding: 16px;
+            overflow-x: auto;
+            font-size: 85%;
+            line-height: 1.45;
+        }
+
+        .markdown-cell pre code {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            font-size: 100%;
+        }
+
+        .markdown-cell blockquote {
+            margin: 0 0 16px 0;
+            padding: 0 1em;
+            color: #6a737d;
+            border-left: 4px solid #dfe2e5;
+        }
+
+        .markdown-cell ul,
+        .markdown-cell ol {
+            margin: 0 0 16px 0;
+            padding-left: 2em;
+        }
+
+        .markdown-cell li {
+            margin: 0.25em 0;
+        }
+
+        .markdown-cell a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .markdown-cell a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-cell hr {
+            border: 0;
+            border-top: 1px solid var(--jp-border-color1);
+            margin: 24px 0;
+        }
+
+        .markdown-cell img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .markdown-cell table {
+            border-collapse: collapse;
+            margin: 0 0 16px 0;
+        }
+
+        .markdown-cell table th,
+        .markdown-cell table td {
+            border: 1px solid #dfe2e5;
+            padding: 6px 13px;
+        }
+
+        .markdown-cell table th {
+            font-weight: 600;
+            background-color: #f6f8fa;
+        }
+
+        .markdown-cell table tr:nth-child(2n) {
+            background-color: #f6f8fa;
+        }
+
+        /* Raw cell styling */
+        .raw-cell {
+            background-color: var(--jp-layout-color1);
+            border: 1px solid var(--jp-border-color1);
+            border-radius: 2px;
+            padding: 8px 12px;
+            font-family: var(--jp-code-font-family);
+            font-size: 13px;
+            white-space: pre-wrap;
+        }
+
+        /* Empty prompt placeholder */
+        .prompt-empty {
+            color: transparent;
+        }
+
+        .export-footer {
+            margin-top: 32px;
+            padding-top: 16px;
+            border-top: 1px solid var(--jp-border-color1);
+            color: #555;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        .export-footer a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+
+        .export-footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="notebook-container">
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [ ]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>def print_board(board) :
+  for i in range(0,9,3) :
+    print(" | ".join(board[i:i+3]))
+    if i&lt; 6 :
+      print("---------")
+  print()
+</pre></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [ ]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>def checker_winner(board) :
+  wins =[
+      (0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6)
+  ]
+  for a ,b,c in wins:
+    if board[a] == board[b] == board[c] != " " :
+      return board[a]
+  return None</pre></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [ ]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>def minimax(board,is_maximizing) :
+  winner = checker_winner(board)
+  if winner == "O" :
+    return 1 ,None
+
+  if winner == "X" :
+    return -1,None
+
+  if " " not in board :
+    return 0 , None
+
+  if is_maximizing:
+    best_score = -float("inf")
+    best_move = None
+    for i in range(9) :
+      if board[i] == " " :
+        board[i] = "O"
+        score , _ = minimax(board,False )
+        board[i] = " "
+
+        if best_score &lt; score :
+          best_score = score
+          best_move = i
+    return best_score , best_move
+
+  else :
+    best_score = float("inf")
+    best_move = None
+
+    for  i in range(9):
+      if board[i] == " ":
+        board[i] ="X"
+        score , _ = minimax(board,True )
+        board[i] = " "
+
+        if best_score &gt; score :
+          best_score = score
+          best_move = i
+    return best_score , best_move
+
+
+
+
+</pre></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [ ]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>def play_game():
+  board = [" "] * 9
+
+  print("tic - tac - toe")
+  print("you are X and computer is O")
+  print("poistions are numbered 1 to 9")
+
+  while True :
+    print_board([
+        str(i+1) if board[i] == " " else board[i]
+        for i in range(9)
+    ])
+
+    try :
+      move = int(input("enter your move(1 to 9)")) -1
+    except ValueError:
+      print("enter a number from 1 to 9 : ")
+      continue
+
+    if move&lt;0 or move &gt;8 or board[move] != " " :
+      print("invalid move ")
+      continue
+    board[move] = "X"
+
+    if checker_winner(board) == "X" :
+      print_board(board)
+      print("human wins!!")
+      break
+
+    if " " not in board :
+      print_board(board)
+      print("it's a draw")
+      break
+    # computer
+
+    score , move = minimax(board,True)
+    board[move]="O"
+    print("computer chooses postion :" , move +1)
+    print_board(board)
+
+    if checker_winner(board) == "O":
+      print("computer wins")
+      break
+
+    if " " not in board :
+      print("it's a draw")
+      break
+
+
+</pre></div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [ ]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>
+play_game()</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-stream">tic - tac - toe
+you are X and computer is O
+poistions are numbered 1 to 9
+1 | 2 | 3
+---------
+4 | 5 | 6
+---------
+7 | 8 | 9
+
+enter your move(1 to 9)1
+computer chooses postion : 5
+X |   |  
+---------
+  | O |  
+---------
+  |   |  
+
+X | 2 | 3
+---------
+4 | O | 6
+---------
+7 | 8 | 9
+
+enter your move(1 to 9)2
+computer chooses postion : 3
+X | X | O
+---------
+  | O |  
+---------
+  |   |  
+
+X | X | O
+---------
+4 | O | 6
+---------
+7 | 8 | 9
+
+enter your move(1 to 9)3
+invalid move 
+X | X | O
+---------
+4 | O | 6
+---------
+7 | 8 | 9
+
+enter your move(1 to 9)4
+computer chooses postion : 7
+X | X | O
+---------
+X | O |  
+---------
+O |   |  
+
+computer wins
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cell cell-code">
+            <div class="cell-prompt input-prompt">In [2]:</div>
+            <div class="cell-content">
+                <div class="input-area"><pre>
+# Q7: Tic-Tac-Toe using Minimax Algorithm
+
+# Display the game board
+def print_board(board):
+    print()
+    for i in range(0, 9, 3):
+        print(" | ".join(board[i:i+3]))
+        if i &lt; 6:
+            print("---------")
+    print()
+
+
+# Check winner
+def check_winner(board):
+    wins = [
+        (0, 1, 2), (3, 4, 5), (6, 7, 8),
+        (0, 3, 6), (1, 4, 7), (2, 5, 8),
+        (0, 4, 8), (2, 4, 6)
+    ]
+
+    for a, b, c in wins:
+        if board[a] == board[b] == board[c] != " ":
+            return board[a]
+
+    return None
+
+
+# Minimax algorithm
+def minimax(board, is_maximizing):
+    winner = check_winner(board)
+
+    if winner == "O":
+        return 1, None
+
+    if winner == "X":
+        return -1, None
+
+    if " " not in board:
+        return 0, None
+
+    if is_maximizing:
+        best_score = -float("inf")
+        best_move = None
+
+        for i in range(9):
+            if board[i] == " ":
+                board[i] = "O"
+                score, _ = minimax(board, False)
+                board[i] = " "
+
+                if score &gt; best_score:
+                    best_score = score
+                    best_move = i
+
+        return best_score, best_move
+
+    else:
+        best_score = float("inf")
+        best_move = None
+
+        for i in range(9):
+            if board[i] == " ":
+                board[i] = "X"
+                score, _ = minimax(board, True)
+                board[i] = " "
+
+                if score &lt; best_score:
+                    best_score = score
+                    best_move = i
+
+        return best_score, best_move
+
+
+# Play the game
+def play_game():
+    board = [" "] * 9
+
+    print("===== TIC-TAC-TOE =====")
+    print("You are X. Computer is O.")
+    print("Enter positions from 1 to 9.")
+
+    while True:
+        # Show position numbers for empty cells
+        display = [
+            str(i + 1) if board[i] == " " else board[i]
+            for i in range(9)
+        ]
+        print_board(display)
+
+        # Human move
+        try:
+            move = int(input("Enter your move (1-9): ")) - 1
+        except ValueError:
+            print("Invalid input! Enter a number from 1 to 9.")
+            continue
+
+        if move &lt; 0 or move &gt; 8 or board[move] != " ":
+            print("Invalid move! Choose an empty position.")
+            continue
+
+        board[move] = "X"
+
+        if check_winner(board) == "X":
+            print_board(board)
+            print("Congratulations! You win.")
+            break
+
+        if " " not in board:
+            print_board(board)
+            print("Game is a draw!")
+            break
+
+        # Computer move using Minimax
+        score, computer_move = minimax(board, True)
+        board[computer_move] = "O"
+
+        print("Computer chooses position:", computer_move + 1)
+        print_board(board)
+
+        if check_winner(board) == "O":
+            print("Computer wins!")
+            break
+
+        if " " not in board:
+            print("Game is a draw!")
+            break
+
+
+# Start the game
+play_game()
+</pre></div>
+                <div class="output-area">
+                    <div class="output-wrapper">
+                        <div class="cell-prompt output-prompt"></div>
+                        <div class="output-content">
+                            <div class="output-stream">===== TIC-TAC-TOE =====
+You are X. Computer is O.
+Enter positions from 1 to 9.
+
+1 | 2 | 3
+---------
+4 | 5 | 6
+---------
+7 | 8 | 9
+
+Enter your move (1-9): 1
+Computer chooses position: 5
+
+X |   |  
+---------
+  | O |  
+---------
+  |   |  
+
+
+X | 2 | 3
+---------
+4 | O | 6
+---------
+7 | 8 | 9
+
+Enter your move (1-9): 6
+Computer chooses position: 2
+
+X | O |  
+---------
+  | O | X
+---------
+  |   |  
+
+
+X | O | 3
+---------
+4 | O | X
+---------
+7 | 8 | 9
+
+Enter your move (1-9): 3
+Computer chooses position: 8
+
+X | O | X
+---------
+  | O | X
+---------
+  | O |  
+
+Computer wins!
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="export-footer">
+        Exported with <a href="https://www.runcell.dev/tool/ipynb-to-html">runcell</a> — convert notebooks to HTML or PDF anytime at runcell.dev.
+    </footer>
+</body>
+</html>
