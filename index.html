@@ -359,6 +359,35 @@
       flex-shrink: 0;
     }
 
+    /* copy button */
+    .copy-btn {
+      font-family: var(--jp-content-font-family);
+      font-size: 11.5px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 3px;
+      border: 1px solid var(--jp-border-color1);
+      background: var(--jp-layout-color0);
+      color: var(--jp-content-font-color1);
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .15s ease;
+    }
+    .copy-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: #f0f7ff;
+    }
+    .copy-btn.copied {
+      border-color: var(--success);
+      color: var(--success);
+      background: #e8f5e9;
+    }
+
     /* check button */
     .chk-btn {
       width: 22px; height: 22px;
@@ -502,6 +531,7 @@
 <div class="toast" id="toast"></div>
 
 <script src="experiments.js?v=2"></script>
+<script src="experiments_code.js?v=1"></script>
 <script>
   /* ── State ── */
   let completed = new Set(JSON.parse(localStorage.getItem('aiml_completed') || '[]'));
@@ -558,6 +588,7 @@
     filtered.forEach(exp => {
       const isDone = completed.has(exp.id);
       const num    = String(exp.id).padStart(2, '0');
+      const hasCode = exp.available && typeof EXPERIMENT_CODES !== 'undefined' && EXPERIMENT_CODES[exp.id];
 
       const cell = document.createElement('div');
       cell.className = 'exp-cell';
@@ -572,6 +603,9 @@
               ? `<a class="exp-title" href="${exp.file}" target="_blank" rel="noopener">${exp.title}</a>`
               : `<span class="exp-title miss">${exp.title}</span>`}
             <span class="exp-tag ${exp.available ? '' : 'miss'}">${exp.topic}</span>
+            ${hasCode
+              ? `<button class="copy-btn" data-id="${exp.id}" title="Copy Python code to clipboard">📋 Copy</button>`
+              : ''}
             ${!exp.available ? `<span class="miss-label">⏳ Pending</span>` : ''}
             ${exp.available
               ? `<button class="chk-btn" data-id="${exp.id}" title="${isDone ? 'Mark incomplete' : 'Mark complete'}">${isDone ? '✓' : ''}</button>`
@@ -583,10 +617,51 @@
       list.appendChild(cell);
     });
 
+    /* wire copy buttons */
+    list.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = Number(btn.dataset.id);
+        const code = (typeof EXPERIMENT_CODES !== 'undefined' && EXPERIMENT_CODES[id]) ? EXPERIMENT_CODES[id] : '';
+        if (!code) {
+          toast(`No code found for Experiment ${id}`);
+          return;
+        }
+
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(code);
+          } else {
+            const ta = document.createElement('textarea');
+            ta.value = code;
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.focus();
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          }
+          btn.innerHTML = '✓ Copied!';
+          btn.classList.add('copied');
+          toast(`📋 Experiment ${id} code copied to clipboard!`);
+          setTimeout(() => {
+            btn.innerHTML = '📋 Copy';
+            btn.classList.remove('copied');
+          }, 2000);
+        } catch (err) {
+          console.error(err);
+          toast('Failed to copy code');
+        }
+      });
+    });
+
     /* wire checkboxes */
     list.querySelectorAll('.chk-btn').forEach(btn => {
       btn.addEventListener('click', e => {
         e.preventDefault();
+        e.stopPropagation();
         const id = Number(btn.dataset.id);
         if (completed.has(id)) { completed.delete(id); toast(`Experiment ${id} unmarked`); }
         else { completed.add(id); toast(`✓ Experiment ${id} marked complete`); }
