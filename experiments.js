@@ -211,24 +211,24 @@ const EXPERIMENTS = [
   },
   {
     id: 29,
-    file: null,
-    title: "Experiment 29",
-    topic: "Pending",
-    available: false
+    file: "experiments/29th.html",
+    title: "Market Basket Analysis Using Apriori",
+    topic: "Association Rules",
+    available: true
   },
   {
     id: 30,
-    file: null,
-    title: "Experiment 30",
-    topic: "Pending",
-    available: false
+    file: "experiments/30th.html",
+    title: "Bank Customer Churn Prediction Using ANN",
+    topic: "Neural Networks",
+    available: true
   },
   {
     id: 31,
-    file: null,
-    title: "Experiment 31",
-    topic: "Pending",
-    available: false
+    file: "experiments/31th.html",
+    title: "Student Pass/Fail Prediction Using ANN",
+    topic: "Neural Networks",
+    available: true
   },
   {
     id: 32,
